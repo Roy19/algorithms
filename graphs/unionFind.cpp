@@ -60,6 +60,10 @@ int graph::Find(int i, int * parent){
 }
 
 void graph::Union(int * parent, int x, int y){
+/*
+ * This can be avoided. This results in reduction of stack frame
+ * and avoiding CPU time to setup the function
+*/
 	// int xset = this->Find(x, parent);
 	// int yset = this->Find(y, parent);
 	
@@ -85,7 +89,8 @@ bool graph::isCyclic(){
 			return true;
 		}
 		// else take their union
-		this->Union(parent, x, y);
+		// this->Union(parent, x, y);
+		parent[x] = y;
 	}	
 
 	delete [] parent;
@@ -95,14 +100,14 @@ bool graph::isCyclic(){
 // Test driver program
 int main(){
 	// create a new graph of 3 vertices, 3 edges
-	graph g(5,4);
+	graph g(5,5);
 
 	// add edges
 	g.setEdge(0, 0, 1);
-	//g.setEdge(1, 1, 2);
-	g.setEdge(1, 1, 3);
-	g.setEdge(2, 1, 4);
-	g.setEdge(3, 0, 2);
+	g.setEdge(1, 1, 2);
+	g.setEdge(2, 1, 3);
+	g.setEdge(3, 1, 4);
+	g.setEdge(4, 0, 2);
 
 	if (g.isCyclic())
 		cout << "Graph is cyclic" << endl;
