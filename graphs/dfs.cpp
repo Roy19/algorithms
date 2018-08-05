@@ -1,5 +1,6 @@
 // Do Depth First Search on a Graph
 #include <iostream>
+#include <stack>
 #include <list>
 using namespace std;
 
@@ -13,7 +14,8 @@ public:
     ~graph();       // destructor
 
     void addEdge(int u,int v);  // add an edge between u and v
-    void dfs(int s);            // start doing dfs on graph from s
+    void dfs_recursive(int s);  // start doing dfs on graph from s
+	void dfs_iterative(int s);	// iterative implementation of dfs		
 };
 
 graph::graph(int V){
@@ -28,7 +30,39 @@ void graph::addEdge(int u,int v){
     adj[u].push_back(v);
 }
 
-void graph::dfs(int s){
+void graph::dfs_iterative(int s){
+	// first make a list of vertices we have visited
+    bool *visited = new bool[V];
+    for(int i = 0;i < V;i++){
+        // initially we haven't visited any
+        visited[i] = false;
+    }
+	// a stack to keep track of which vertex to visit next
+	stack<int> st;
+	st.push(s);		// push the starting vertex
+	
+	// while there are still vertices to cover
+	while(!st.empty()){
+		int u = st.top();
+		st.pop();
+		
+		if(visited[u]){
+			continue;
+		}
+		
+		visited[u] = true;
+		cout << u << " ";
+		
+		// for each vertex adjacent to u
+		for(auto it = adj[u].begin(); it != adj[u].end(); it++){
+			if(!visited[*it])	// if I haven't visited them
+				st.push(*it);	// push them to the stack to later visit 
+								// them one by one
+		}
+	}
+}
+
+void graph::dfs_recursive(int s){
     // first make a list of vertices we have visited
     bool *visited = new bool[V];
     for(int i = 0;i < V;i++){
@@ -68,9 +102,15 @@ int main(){
     g.addEdge(2, 0);
     g.addEdge(3, 3);
  
-    cout << "Following is Depth First Traversal"
+    cout << "Following is Depth First Traversal Recursive"
             " (starting from vertex 2) \n";
-    g.dfs(2);
- 
+    g.dfs_recursive(2);
+	cout << endl;
+	
+	cout << "Following is Depth First Traversal Iterative"
+            " (starting from vertex 2) \n";
+    g.dfs_iterative(2);
+	cout << endl;
+	
     return 0;
 }
