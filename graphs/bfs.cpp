@@ -63,7 +63,9 @@ void graph::bfs_recursive(int s){
 	
 	q.push(s);				// push the starting node
 	
-	doBfsUtil(q, visited);	
+	doBfsUtil(q, visited);
+
+	delete [] visited;
 }
 
 void graph::bfs_iterative(int s){
