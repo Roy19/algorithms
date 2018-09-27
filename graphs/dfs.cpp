@@ -46,10 +46,6 @@ void graph::dfs_iterative(int s){
 		int u = st.top();
 		st.pop();
 		
-		if(visited[u]){
-			continue;
-		}
-		
 		visited[u] = true;
 		cout << u << " ";
 		
@@ -60,6 +56,8 @@ void graph::dfs_iterative(int s){
 								// them one by one
 		}
 	}
+
+    delete [] visited;
 }
 
 void graph::dfs_recursive(int s){
